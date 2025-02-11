@@ -2,7 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose';
 import "dotenv/config"
 import Joi from 'joi';
-import Recipe from './recipeSchema/recipes'
+import Recipe from './recipeSchema/recipes.js'
 
 
 const app = express();
@@ -33,7 +33,7 @@ function errorHandler(err, req, res, next) {
 // POST /api/recipes - Create a new recipe
 router.post('/recipes', async (req, res, next) => {
     try {
-        // Validate input
+        // Validate input before its being sent to the database
         const { error } = recipeValidationSchema.validate(req.body);
         if (error) {
             return res.status(400).json({ message: error.details[0].message });
@@ -126,7 +126,7 @@ app.use(errorHandler);
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         
-        app.listen(3000, () => {
+        app.listen(PORT, () => {
             console.log('Server running on port 3000');
         });
     })
